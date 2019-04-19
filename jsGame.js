@@ -131,6 +131,30 @@ function elt(name, attrs, ...children) {
     return dom;
 }
 
+
+class DOMdisplay {
+    constructor(parent, level) {
+        this.dom = elt("div", {class: "game"}, drawGrid(level));
+        this.actorLayer = null;
+        parent.appendChild(this.dom);
+
+    }
+
+    clear() {
+        this.dom.remove();
+    }
+}
+
+function drawGrid(level) {
+    return elt("table", {
+        class: "background",
+        style: `width: ${level.width * scale}px`
+    }, ...level.rows.map(row =>
+        elt("tr", {style: `height: ${scale}px`},
+        ...row.map(type => elt("td", {class: type})))
+        ));
+}
+
 const levelChars = {
     "." : "empty",
     "#": "wall",
@@ -141,6 +165,9 @@ const levelChars = {
     "|": Lava,
     "v": Lava
 };
+
+const scale = 20;
+
 
 
 let simpleLevelPlan = `
